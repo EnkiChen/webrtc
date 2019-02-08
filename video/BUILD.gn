@@ -168,6 +168,10 @@ rtc_source_set("video_stream_encoder_impl") {
 
   # visibility = [ "../api/video:video_stream_encoder_create" ]
   sources = [
+    "encoder_bitrate_adjuster.cc",
+    "encoder_bitrate_adjuster.h",
+    "encoder_overshoot_detector.cc",
+    "encoder_overshoot_detector.h",
     "overuse_frame_detector.cc",
     "overuse_frame_detector.h",
     "video_stream_encoder.cc",
@@ -180,7 +184,9 @@ rtc_source_set("video_stream_encoder_impl") {
   }
 
   deps = [
+    "../api/units:data_rate",
     "../api/video:encoded_image",
+    "../api/video:video_bitrate_allocation",
     "../api/video:video_bitrate_allocator",
     "../api/video:video_bitrate_allocator_factory",
     "../api/video:video_frame",
@@ -202,6 +208,7 @@ rtc_source_set("video_stream_encoder_impl") {
     "../rtc_base:sequenced_task_checker",
     "../rtc_base:timeutils",
     "../rtc_base/experiments:quality_scaling_experiment",
+    "../rtc_base/experiments:rate_control_settings",
     "../rtc_base/system:fallthrough",
     "../rtc_base/task_utils:repeating_task",
     "../system_wrappers:field_trial",
@@ -453,6 +460,8 @@ if (rtc_include_tests) {
       "buffered_frame_decryptor_unittest.cc",
       "call_stats_unittest.cc",
       "cpu_scaling_tests.cc",
+      "encoder_bitrate_adjuster_unittest.cc",
+      "encoder_overshoot_detector_unittest.cc",
       "encoder_rtcp_feedback_unittest.cc",
       "end_to_end_tests/bandwidth_tests.cc",
       "end_to_end_tests/call_operation_tests.cc",
@@ -500,6 +509,7 @@ if (rtc_include_tests) {
       "../api:mock_frame_decryptor",
       "../api:simulated_network_api",
       "../api/test/video:function_video_factory",
+      "../api/units:data_rate",
       "../api/video:builtin_video_bitrate_allocator_factory",
       "../api/video:encoded_image",
       "../api/video:video_bitrate_allocation",
